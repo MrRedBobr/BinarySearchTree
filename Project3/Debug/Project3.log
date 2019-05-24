@@ -1,0 +1,5 @@
+﻿  Source.cpp
+c:\users\111\source\repos\project3\project3\source.cpp(89): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\111\source\repos\project3\project3\source.cpp(204): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\111\source\repos\project3\project3\source.cpp(206): warning C4101: numb: неиспользованная локальная переменная
+  Project3.vcxproj -> C:\Users\111\source\repos\Project3\Debug\Project3.exe
