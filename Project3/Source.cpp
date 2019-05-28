@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -12,6 +13,11 @@ struct Node
 	vector<double> dataArray;
 	Node *left, *right;
 };
+
+double defendWriteDouble();
+unsigned int defendWriteInt();
+
+vector<string> split(string &s, char delim);
 
 void mainMenu()
 {
@@ -163,97 +169,49 @@ int main()
 	while(true){
 		mainMenu();
 		string command;
+
+		/*----------Работа cmd с разделением на аргументы----------*/
+		/*std::vector<std::string> args = {};
+		string messages;
+		getline(cin, messages);
+		transform(messages.begin(), messages.end(), messages.begin(), ::tolower);
+		args = split(messages, ' ');
+		command = args[0];
+		args.erase(args.begin());*/
+		// На аргументы разделять покачто не вижу смысла оставлю на потом...
+
 		getline(cin, command);
 		transform(command.begin(), command.end(), command.begin(), ::tolower);
 		system("cls");
-		bool eror = true;
 		if (command == "add")
 		{
 			double keyNumb;
 			string keyWord;
 			vector<double> dataArray = {};
-			cout << "Write key number for node:";
-			while(eror) // ввод keyNumb
-			{
-				try
-				{
-					string str;
-					getline(cin, str);
-					keyNumb = stod(str);
-					eror = false;
-				}
-				catch(const std::exception& e)
-				{
-					eror = true;
-					std::cerr << e.what() << ". Try again: ";
-				}
-			}
-			cout << "Write key word for node: ";
+			unsigned int arrN = 0;  
+			cout << "Write key NUMBER for node:";
+			keyNumb = defendWriteDouble();
+			cout << "Write key WORD for node: ";
 			getline(cin, keyWord);
-			cout << "Write data massive for node:" << endl;
-			eror = true;
-			while(eror)
+			cout << "	Write DATA massive for node..." << endl;
+			cout << "		Numder elements of data: ";
+			arrN = defendWriteInt();
+			cout << "	Data push:\n";
+			for(unsigned int i=0; i<arrN; i++)
 			{
-				try
-				{
-					unsigned int arrNumb;
-					string str;
-					cout << "	Numder elements of massive: ";
-					getline(cin, str);
-					arrNumb = stoi(str);
-					for(int i = 0; i<arrNumb; i++)
-					{
-						double numb;
-						bool numbError = true;
-						while(numbError)
-						{
-							try
-							{
-								cout << "	";
-								string tryStrNumb;
-								getline(cin, tryStrNumb);
-								dataArray.push_back(stod(tryStrNumb));
-								numbError = false;
-							}
-							catch(const std::exception& e)
-							{
-								std::cerr << e.what() << ". Try again: ";
-								numbError = false;
-							}
-						}
-					}
-					eror = false;
-				}
-				catch(const std::exception& e)
-				{
-					std::cerr << e.what() << ". Try again: ";
-					eror = true;
-				}
+				cout << "		" << "Data[" << i << "] = ";
+				dataArray.push_back(defendWriteDouble());
 			}
 			addTree(Tree, keyNumb, keyWord, dataArray);
-
 		} else if (command == "show")
 		{
 			showTree(Tree);
 			cout << endl;
 		} else if (command == "search")
 		{
-			double sechElem;
-			while(eror)
-			{
-				cout << "Write search key numb: ";
-				try
-				{
-					getline(cin, command);
-					sechElem = stod(command);
-					eror = false;
-				}
-				catch(const std::exception& e)
-				{
-					std::cerr << e.what() << ". Try again: ";
-					eror = true;
-				}
-			}
+			cout << "Write key number for search." << endl;
+			double sechElem = defendWriteDouble();
+			cout << endl << "Result:" << endl;
 			searchTree(Tree, sechElem);
 			cout << endl;	
 		} else if (command == "exit")
@@ -265,24 +223,9 @@ int main()
 			cout << "Tree is empty." << endl;
 		} else if (command == "del")
 		{
-			double sechElem;
-			while(eror)
-			{
-				cout << "Write search key numb: ";
-				try
-				{
-					getline(cin, command);
-					sechElem = stod(command);
-					eror = false;
-				}
-				catch(const std::exception& e)
-				{
-					std::cerr << e.what() << ". Try again: ";
-					eror = true;
-				}
-			}
 			cout << "Write search key word: ";
-			getline(cin, command);
+			double sechElem = defendWriteDouble();
+			//getline(cin, command);
 		}
 		else
 		{
@@ -292,8 +235,63 @@ int main()
 		system("pause");
 		system("cls");
 	}
-	
+
 	return 1;
 }
 
+double defendWriteDouble()
+{
+	double keyNumb;
+	bool eror = true;
+	while(eror) // ввод keyNumb
+	{
+		try
+		{
+			string str;
+			getline(cin, str);
+			keyNumb = stod(str);
+			eror = false;
+		}
+		catch(const std::exception& e)
+		{
+			eror = true;
+			std::cerr << e.what() << ". Try again: ";
+		}
+	}
+	return keyNumb;
+}
+unsigned int defendWriteInt()
+{
+	unsigned int keyNumb;
+	bool eror = true;
+	while(eror) // ввод keyNumb
+	{
+		try
+		{
+			string str;
+			getline(cin, str);
+			keyNumb = stoi(str);
+			eror = false;
+		}
+		catch(const std::exception& e)
+		{
+			eror = true;
+			std::cerr << e.what() << ". Try again: ";
+		}
+	}
+
+	return keyNumb;
+}
+
+vector<string> split(string &s, char delim) 
+{
+	stringstream ss(s);
+	string item;
+	vector<string> elems;
+	while (getline(ss, item, delim)) 
+	{
+		elems.push_back(item);
+	}
+	return elems;
+}
 
